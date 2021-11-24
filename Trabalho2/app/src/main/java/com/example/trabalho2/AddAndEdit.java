@@ -29,10 +29,18 @@ public class AddAndEdit extends AppCompatActivity {
 
         op = bundle.getString("op");
 
-        Toast.makeText(this, op, Toast.LENGTH_SHORT).show();
+        if(op.equals("edit")) {
+            String name = bundle.getString("name");
+            String starOfTeam = bundle.getString("starOfTeam");
+            String titles = bundle.getString("titles");
+
+            inputName.setText(name);
+            inputStarOfTeam.setText(starOfTeam);
+            inputTitles.setText(titles);
+        }
     }
 
-    private void handleAdd() {
+    private void handleSave() {
         String name = inputName.getText().toString();
         String starOfTeam = inputStarOfTeam.getText().toString();
         String titles = inputTitles.getText().toString();
@@ -66,9 +74,7 @@ public class AddAndEdit extends AppCompatActivity {
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               if(op.equals("add")) {
-                   handleAdd();
-               }
+                handleSave();
             }
         });
     }

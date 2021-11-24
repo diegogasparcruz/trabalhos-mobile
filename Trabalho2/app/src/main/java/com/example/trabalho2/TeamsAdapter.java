@@ -15,11 +15,33 @@ public class TeamsAdapter extends RecyclerView.Adapter<TeamsAdapter.TeamsViewHol
 
     private ArrayList<Team> teams;
 
-    public TeamsAdapter(ArrayList<Team> teams) {
-        this.teams = teams;
+    public TeamsAdapter() {
+        this.teams = new ArrayList<Team>();
     }
 
+    public void addTeam(Team team) {
+        this.teams.add(team);
 
+        notifyItemInserted(teams.size() - 1);
+    }
+
+    public void editTeam(int idTeam, String name, String starOfTeam, String titles) {
+        if(idTeam >= 0 && idTeam < teams.size()) {
+            teams.get(idTeam).setName(name);
+            teams.get(idTeam).setStarOfTeam(starOfTeam);
+            teams.get(idTeam).setNumberTitles(titles);
+            notifyItemChanged(idTeam);
+        }
+    }
+
+    public Team getTeamById(int id) {
+        for(Team team : teams) {
+            if(team.getId() == id) {
+                return team;
+            }
+        }
+        return null;
+    }
 
     @NonNull
     @Override
@@ -35,7 +57,7 @@ public class TeamsAdapter extends RecyclerView.Adapter<TeamsAdapter.TeamsViewHol
         holder.textTeamNameFill.setText(team.getName());
         holder.textTeamStarFill.setText(team.getStarOfTeam());
         holder.textTitlesFill.setText(team.getNumberTitles());
-        holder.id.setText(team.getId().toString());
+        holder.id.setText("ID: " + team.getId().toString());
     }
 
     @Override

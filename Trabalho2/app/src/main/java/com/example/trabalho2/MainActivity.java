@@ -2,6 +2,7 @@ package com.example.trabalho2;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Activity;
@@ -10,6 +11,9 @@ import android.os.Bundle;
 import android.service.controls.actions.FloatAction;
 import android.view.View;
 import android.widget.Adapter;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -20,7 +24,9 @@ public class MainActivity extends AppCompatActivity {
     private FloatingActionButton feb;
     private RecyclerView recyclerView;
     private TeamsAdapter teamsAdapter;
-    private ArrayList<Team> teams;
+    private Button btnEdit;
+    private EditText inputEditTeamId;
+    private Integer idTeam;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +35,13 @@ public class MainActivity extends AppCompatActivity {
 
         feb = findViewById(R.id.floatingActionButton);
         recyclerView = findViewById(R.id.recyclerview);
+        btnEdit = findViewById(R.id.btn_edit);
+        inputEditTeamId = findViewById(R.id.inputEditTeamId);
+
+        recyclerView.setLayoutManager(new LinearLayoutManager((this)));
+
+        teamsAdapter = new TeamsAdapter();
+        recyclerView.setAdapter(teamsAdapter);
 
         feb.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -40,9 +53,37 @@ public class MainActivity extends AppCompatActivity {
                 startActivityForResult(intent, 1);
             }
         });
-        teams = new ArrayList<Team>();
-        teamsAdapter = new TeamsAdapter(teams);
-        recyclerView.setAdapter(teamsAdapter);
+
+        btnEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String inputValue = inputEditTeamId.getText().toString();
+
+                if(inputValue.trim().isEmpty()) {
+                    Toast.makeText(v.getContext(), "Insira um ID!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                idTeam = Integer.valueOf(inputValue);
+
+                Team team = teamsAdapter.getTeamById(idTeam);
+
+                if (team == null) {
+                    Toast.makeText(v.getContext(), "ID inválido!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                Intent intent = new Intent(MainActivity.this, AddAndEdit.class);
+                intent.putExtra("op", "edit");
+                intent.putExtra("name", team.getName());
+                intent.putExtra("starOfTeam", team.getStarOfTeam());
+                intent.putExtra("titles", team.getNumberTitles());
+                startActivityForResult(intent, 2);
+            }
+        });
+
+
+
     }
 
     @Override
@@ -57,12 +98,20 @@ public class MainActivity extends AppCompatActivity {
                 Integer id = teamsAdapter.getItemCount();
 
                 Team team = new Team(id, name, starOfTeam, titles);
-                teams.add(team);
-                teamsAdapter.notifyDataSetChanged();
+                teamsAdapter.addTeam(team);
             }
-            if (resultCode == Activity.RESULT_CANCELED) {
-                // Write your code if there's no result
+
+        }
+
+        if (requestCode == 2) {
+            if(resultCode == Activity.RESULT_OK){
+                String name = data.getStringExtra("name");
+                String starOfTeam = data.getStringExtra("starOfTeam");
+                String titles = data.getStringExtra("titles");
+
+                teamsAdapter.editTeam(idTeam, name, starOfTeam, titles);
             }
+            inputEditTeamId.setText("");
         }
     } //onActivityResult
 }
