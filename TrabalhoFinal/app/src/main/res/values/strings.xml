@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Trabalho Final</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string-array name="types_property">
+        <item>Casa</item>
+        <item>Apartamento</item>
+    </string-array>
+</resources>

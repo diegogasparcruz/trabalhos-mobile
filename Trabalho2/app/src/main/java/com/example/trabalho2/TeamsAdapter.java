@@ -65,7 +65,7 @@ public class TeamsAdapter extends RecyclerView.Adapter<TeamsAdapter.TeamsViewHol
         return this.teams.size();
     }
 
-    class TeamsViewHolder extends RecyclerView.ViewHolder {
+    class  TeamsViewHolder extends RecyclerView.ViewHolder {
         ConstraintLayout layoutTripContainer;
         View viewBackground;
         TextView textTeamNameFill;
