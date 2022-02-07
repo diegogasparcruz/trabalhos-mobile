@@ -31,6 +31,10 @@ public class ChatListAdapter extends RecyclerView.Adapter<ChatListAdapter.ChatLi
         this.users.add(user);
     }
 
+    public void addAll(ArrayList<User> users) {
+        this.users = users;
+    }
+
     @NonNull
     @Override
     public ChatListVH onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -47,6 +51,7 @@ public class ChatListAdapter extends RecyclerView.Adapter<ChatListAdapter.ChatLi
 
         holder.parentLayoutListChats.setOnClickListener(view -> {
             Intent intent = new Intent(this.context, ChatActivity.class);
+            intent.putExtra("user", user);
             this.context.startActivity(intent);
         });
     }

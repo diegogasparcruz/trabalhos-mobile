@@ -1,16 +1,18 @@
 package com.example.trabalhofinal.models;
 
-public class Message {
+public class Chat {
     private String id;
     private String senderId;
+    private String receivedId;
     private String message;
 
-    public Message() {
+    public Chat() {
     }
 
-    public Message(String id, String senderId, String message) {
+    public Chat(String id, String senderId, String receivedId, String message) {
         this.id = id;
         this.senderId = senderId;
+        this.receivedId = receivedId;
         this.message = message;
     }
 
@@ -30,6 +32,14 @@ public class Message {
         this.senderId = senderId;
     }
 
+    public String getReceivedId() {
+        return receivedId;
+    }
+
+    public void setReceivedId(String receivedId) {
+        this.receivedId = receivedId;
+    }
+
     public String getMessage() {
         return message;
     }
@@ -37,4 +47,6 @@ public class Message {
     public void setMessage(String message) {
         this.message = message;
     }
+
+
 }

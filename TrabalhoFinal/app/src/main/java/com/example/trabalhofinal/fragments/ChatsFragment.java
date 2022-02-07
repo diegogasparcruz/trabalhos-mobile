@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 
 import com.example.trabalhofinal.R;
 import com.example.trabalhofinal.adapters.ChatListAdapter;
+import com.example.trabalhofinal.dao.DAOUser;
 import com.example.trabalhofinal.models.User;
 
 
@@ -37,19 +38,9 @@ public class ChatsFragment extends Fragment {
 
     private void loadMessages() {
         ChatListAdapter chatListAdapter = new ChatListAdapter(getContext());
+        DAOUser daoUser = new DAOUser();
 
-        User user1 = new User();
-        user1.setName("Lucas");
-
-        User user2 = new User();
-        user2.setName("Carlos");
-
-        User user3 = new User();
-        user3.setName("Alê");
-
-        chatListAdapter.addItem(user1);
-        chatListAdapter.addItem(user2);
-        chatListAdapter.addItem(user3);
+        daoUser.listAll(chatListAdapter);
 
         recyclerView.setAdapter(chatListAdapter);
     }

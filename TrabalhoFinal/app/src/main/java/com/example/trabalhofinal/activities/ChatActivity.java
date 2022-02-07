@@ -1,54 +1,56 @@
 package com.example.trabalhofinal.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.RecyclerView;
 
-import android.app.Activity;
 import android.os.Bundle;
 
-import com.example.trabalhofinal.R;
 import com.example.trabalhofinal.adapters.ChatAdapter;
+import com.example.trabalhofinal.dao.DAOChat;
 import com.example.trabalhofinal.databinding.ActivityChatBinding;
-import com.example.trabalhofinal.models.Message;
+import com.example.trabalhofinal.models.Chat;
+import com.example.trabalhofinal.models.User;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 
 public class ChatActivity extends AppCompatActivity {
     private ActivityChatBinding binding;
     private ChatAdapter chatAdapter;
+    private User userReceived;
+    private DAOChat daoChat;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         binding = ActivityChatBinding.inflate(getLayoutInflater());
-
-        loadChatMessages();
-
         setContentView(binding.getRoot());
+        userReceived = (User) getIntent().getSerializableExtra("user");
+        daoChat = new DAOChat();
+        setListeners();
+    }
+
+    private void setListeners() {
+        binding.buttonGchatSend.setOnClickListener(v -> {
+            sendMessage();
+        });
+        loadChatMessages();
     }
 
     private void loadChatMessages() {
-        Message msg1 = new Message();
-        msg1.setSenderId("1");
-        msg1.setMessage("Jooj");
+        chatAdapter = new ChatAdapter(FirebaseAuth.getInstance().getCurrentUser().getUid());
 
-        Message msg2 = new Message();
-        msg2.setSenderId("1");
-        msg2.setMessage("Jooj <<<<< bha");
-
-        Message msg3 = new Message();
-        msg3.setSenderId("2");
-        msg3.setMessage("DBZ !== Naruto");
-
-        ArrayList<Message> messages = new ArrayList<>();
-
-        messages.add(msg1);
-        messages.add(msg2);
-        messages.add(msg3);
-
-        chatAdapter = new ChatAdapter(messages, "1");
+        daoChat.listConversation(chatAdapter, userReceived.getId());
 
         binding.recyclerGchat.setAdapter(chatAdapter);
+    }
+
+    private void sendMessage() {
+        String textMessage = binding.editGchatMessage.getText().toString();
+
+        if(!textMessage.trim().isEmpty()) {
+            daoChat.sendMessage(textMessage, userReceived.getId());
+        }
+
+        binding.editGchatMessage.setText(null);
     }
 }

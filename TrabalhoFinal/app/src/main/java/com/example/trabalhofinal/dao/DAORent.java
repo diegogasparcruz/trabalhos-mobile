@@ -42,8 +42,8 @@ public class DAORent {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 ArrayList<Rent> rents = new ArrayList<>();
 
-                for (DataSnapshot postSnapshot: snapshot.getChildren()) {
-                    if(!postSnapshot.child("userId").getValue().toString().equals(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
+                for (DataSnapshot postSnapshot : snapshot.getChildren()) {
+                    if (!FirebaseAuth.getInstance().getCurrentUser().getUid().equals(postSnapshot.child("userId").getValue().toString())) {
                         Rent rent = new Rent();
 
                         rent.setTitle(postSnapshot.child("title").getValue().toString());
@@ -89,8 +89,8 @@ public class DAORent {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 ArrayList<Rent> rents = new ArrayList<>();
 
-                for (DataSnapshot postSnapshot: snapshot.getChildren()) {
-                    if(postSnapshot.child("userId").getValue().toString().equals(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
+                for (DataSnapshot postSnapshot : snapshot.getChildren()) {
+                    if (postSnapshot.child("userId").getValue().toString().equals(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
                         Rent rent = new Rent();
 
                         rent.setTitle(postSnapshot.child("title").getValue().toString());
