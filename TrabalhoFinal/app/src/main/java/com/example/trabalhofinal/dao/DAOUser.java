@@ -16,6 +16,7 @@ import com.example.trabalhofinal.models.Address;
 import com.example.trabalhofinal.models.Rent;
 import com.example.trabalhofinal.models.User;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -55,10 +56,10 @@ public class DAOUser {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot postSnapshot : snapshot.getChildren()) {
                     if (FirebaseAuth.getInstance().getCurrentUser().getUid().equals(postSnapshot.child("id").getValue().toString())) {
-                        for(DataSnapshot bookMarks : postSnapshot.child("bookMarksIds").getChildren()) {
+                        for (DataSnapshot bookMarks : postSnapshot.child("bookMarksIds").getChildren()) {
                             String bookMarkId = bookMarks.getValue().toString();
 
-                            if(bookMarkId.equals(rent.getId())) {
+                            if (bookMarkId.equals(rent.getId())) {
                                 imgNotMarked.setVisibility(View.GONE);
                                 imgIsMarked.setVisibility(View.VISIBLE);
                                 return;
@@ -110,7 +111,7 @@ public class DAOUser {
         databaseReference.addValueEventListener(eventListener);
     }
 
-    public void handleContactUser(String userId, TextView txtName, ImageView sendChat, Context context){
+    public void handleContactUser(String userId, TextView txtName, ImageView sendChat, Context context) {
         if (FirebaseAuth.getInstance().getCurrentUser() == null) {
             return;
         }
@@ -146,4 +147,32 @@ public class DAOUser {
 
         databaseReference.addValueEventListener(eventListener);
     }
+
+
+    public void me(TextInputEditText inputName, TextInputEditText inputEmail) {
+        if (FirebaseAuth.getInstance().getCurrentUser() == null) {
+            return;
+        }
+
+        ValueEventListener eventListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                for (DataSnapshot postSnapshot : snapshot.getChildren()) {
+                    if (FirebaseAuth.getInstance().getCurrentUser().getUid().equals(postSnapshot.child("id").getValue().toString())) {
+                        inputName.setText(postSnapshot.child("name").getValue().toString());
+                        inputEmail.setText(postSnapshot.child("email").getValue().toString());
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.d("Erro", error.getMessage());
+            }
+        };
+
+        databaseReference.addValueEventListener(eventListener);
+    }
+
 }
