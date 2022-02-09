@@ -12,6 +12,7 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.trabalhofinal.R;
+import com.example.trabalhofinal.activities.AddNewRentalActivity;
 import com.example.trabalhofinal.activities.RentalDetailsActivity;
 import com.example.trabalhofinal.models.Rent;
 
@@ -49,7 +50,8 @@ public class MyRentalsAdapter extends RecyclerView.Adapter<MyRentalsAdapter.MyRe
         holder.txtMonth.setText("/mês");
 
         holder.cardDetails.setOnClickListener(view -> {
-            Intent intent = new Intent(this.context, RentalDetailsActivity.class);
+            Intent intent = new Intent(this.context, AddNewRentalActivity.class);
+            intent.putExtra("rent", rent);
             this.context.startActivity(intent);
         });
     }

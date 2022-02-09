@@ -30,10 +30,10 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     private void setListeners() {
+        loadChatMessages();
         binding.buttonGchatSend.setOnClickListener(v -> {
             sendMessage();
         });
-        loadChatMessages();
     }
 
     private void loadChatMessages() {

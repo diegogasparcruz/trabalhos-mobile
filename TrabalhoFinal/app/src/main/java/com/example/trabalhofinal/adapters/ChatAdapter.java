@@ -28,6 +28,7 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     public void setMessages(List<Chat> chatMessages) {
         this.chatChats = chatMessages;
+
     }
 
     @NonNull

@@ -13,7 +13,8 @@ import com.example.trabalhofinal.databinding.ActivityRentalDetailsBinding;
 import com.example.trabalhofinal.models.Rent;
 
 public class RentalDetailsActivity extends AppCompatActivity {
-    ActivityRentalDetailsBinding binding;
+    private ActivityRentalDetailsBinding binding;
+    private DAOUser daoUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +29,10 @@ public class RentalDetailsActivity extends AppCompatActivity {
 
         Rent rent = (Rent) getIntent().getSerializableExtra("rent");
 
+        daoUser = new DAOUser();
+
+        daoUser.handleBookMark(rent, binding.bookMark, binding.bookMarkSelected);
+
         binding.txtTitleRentalDetails.setText(rent.getTitle());
         binding.txtDescriptionRentalDetails.setText(rent.getDescription());
         binding.txtNumberBedroomsRentalDetails.setText(rent.getNumberBedrooms() + "");
@@ -36,7 +41,6 @@ public class RentalDetailsActivity extends AppCompatActivity {
         binding.txtMoneyRentalDetails.setText(rent.getPrice() + "");
 
         binding.bookMark.setOnClickListener(v -> {
-            DAOUser daoUser = new DAOUser();
             binding.bookMark.setVisibility(View.GONE);
             binding.bookMarkSelected.setVisibility(View.VISIBLE);
             daoUser.saveBookMark(rent.getId());
@@ -45,7 +49,9 @@ public class RentalDetailsActivity extends AppCompatActivity {
         binding.bookMarkSelected.setOnClickListener(v -> {
             binding.bookMarkSelected.setVisibility(View.GONE);
             binding.bookMark.setVisibility(View.VISIBLE);
+            daoUser.removeBookMark(rent.getId());
         });
 
+        daoUser.handleContactUser(rent.getUserId(), binding.txtNameUserRentalDetails, binding.iconEnd, this);
     }
 }

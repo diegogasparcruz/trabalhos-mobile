@@ -13,30 +13,30 @@ import android.view.ViewGroup;
 
 import com.example.trabalhofinal.R;
 import com.example.trabalhofinal.adapters.ProfileAdapter;
+import com.example.trabalhofinal.databinding.FragmentProfileBinding;
 
 
 public class ProfileFragment extends Fragment {
-    private RecyclerView recyclerView;
+    private FragmentProfileBinding binding;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_profile, container, false);
+        binding = FragmentProfileBinding.inflate(inflater, container, false);
 
-        recyclerView = view.findViewById(R.id.recyclerview_profile);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        recyclerView
-                .addItemDecoration(new DividerItemDecoration(recyclerView.getContext(),
+        binding.recyclerviewProfile.setLayoutManager(new LinearLayoutManager(getContext()));
+        binding.recyclerviewProfile
+                .addItemDecoration(new DividerItemDecoration(binding.recyclerviewProfile.getContext(),
                         DividerItemDecoration.VERTICAL));
 
         loadProfileAdapter();
-        return view;
+        return binding.getRoot();
     }
 
     private void loadProfileAdapter() {
         ProfileAdapter profileAdapter = new ProfileAdapter(getContext());
 
-        recyclerView.setAdapter(profileAdapter);
+        binding.recyclerviewProfile.setAdapter(profileAdapter);
     }
 }
 

@@ -54,7 +54,7 @@ public class DAOChat {
                     chat.setReceivedId(receivedId);
                     chat.setMessage(message);
 
-                    if(senderId.equals(userId) && receivedId.equals(userReceiver)) {
+                    if(senderId.equals(userId) && receivedId.equals(userReceiver) || senderId.equals(userReceiver) && receivedId.equals(userId)) {
                         chats.add(chat);
                     }
                 }

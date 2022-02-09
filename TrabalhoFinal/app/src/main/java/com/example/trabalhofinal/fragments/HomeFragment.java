@@ -1,5 +1,6 @@
 package com.example.trabalhofinal.fragments;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,28 +18,80 @@ import com.example.trabalhofinal.activities.MainActivity;
 import com.example.trabalhofinal.activities.RegisterActivity;
 import com.example.trabalhofinal.adapters.HomeListAdapter;
 import com.example.trabalhofinal.dao.DAORent;
+import com.example.trabalhofinal.databinding.FragmentHomeBinding;
 import com.example.trabalhofinal.models.Rent;
 
 public class HomeFragment extends Fragment {
-    private RecyclerView recyclerView;
+    private FragmentHomeBinding binding;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_home, container, false);
-
-        recyclerView = view.findViewById(R.id.recyclerview_rent_list);
+        binding = FragmentHomeBinding.inflate(inflater, container, false);
 
         loadRentList();
 
-        return view;
+        setListeners();
+
+        return binding.getRoot();
     }
 
-    private void loadRentList(){
-        HomeListAdapter homeListAdapter = new HomeListAdapter(getContext());
+    private void setListeners() {
+        binding.btnCategoryAll.setOnClickListener(v -> {
+            binding.btnCategoryAll.setBackgroundColor(Color.parseColor("#303030"));
+            binding.btnCategoryAll.setTextColor(Color.parseColor("#FFFFFF"));
 
+            binding.btnCategoryHouse.setBackgroundColor(Color.parseColor("#FFFFFF"));
+            binding.btnCategoryHouse.setTextColor(Color.parseColor("#FFBB86FC"));
+
+            binding.btnCategoryApartment.setBackgroundColor(Color.parseColor("#FFFFFF"));
+            binding.btnCategoryApartment.setTextColor(Color.parseColor("#FFBB86FC"));
+            loadRentList();
+        });
+
+        binding.btnCategoryHouse.setOnClickListener(v -> {
+            binding.btnCategoryHouse.setBackgroundColor(Color.parseColor("#303030"));
+            binding.btnCategoryHouse.setTextColor(Color.parseColor("#FFFFFF"));
+
+            binding.btnCategoryAll.setBackgroundColor(Color.parseColor("#FFFFFF"));
+            binding.btnCategoryAll.setTextColor(Color.parseColor("#FFBB86FC"));
+
+            binding.btnCategoryApartment.setBackgroundColor(Color.parseColor("#FFFFFF"));
+            binding.btnCategoryApartment.setTextColor(Color.parseColor("#FFBB86FC"));
+            loadHouses();
+        });
+
+        binding.btnCategoryApartment.setOnClickListener(v -> {
+            binding.btnCategoryApartment.setBackgroundColor(Color.parseColor("#303030"));
+            binding.btnCategoryApartment.setTextColor(Color.parseColor("#FFFFFF"));
+
+            binding.btnCategoryAll.setBackgroundColor(Color.parseColor("#FFFFFF"));
+            binding.btnCategoryAll.setTextColor(Color.parseColor("#FFBB86FC"));
+
+            binding.btnCategoryHouse.setBackgroundColor(Color.parseColor("#FFFFFF"));
+            binding.btnCategoryHouse.setTextColor(Color.parseColor("#FFBB86FC"));
+            loadApartment();
+        });
+    }
+
+    private void loadRentList() {
+        HomeListAdapter homeListAdapter = new HomeListAdapter(getContext());
         DAORent daoRent = new DAORent();
         daoRent.listAll(homeListAdapter);
-
-        recyclerView.setAdapter(homeListAdapter);
+        binding.recyclerviewRentList.setAdapter(homeListAdapter);
     }
+
+    private void loadHouses() {
+        HomeListAdapter homeListAdapter = new HomeListAdapter(getContext());
+        DAORent daoRent = new DAORent();
+        daoRent.filterByType(homeListAdapter, 0);
+        binding.recyclerviewRentList.setAdapter(homeListAdapter);
+    }
+
+    private void loadApartment() {
+        HomeListAdapter homeListAdapter = new HomeListAdapter(getContext());
+        DAORent daoRent = new DAORent();
+        daoRent.filterByType(homeListAdapter, 1);
+        binding.recyclerviewRentList.setAdapter(homeListAdapter);
+    }
+
 }

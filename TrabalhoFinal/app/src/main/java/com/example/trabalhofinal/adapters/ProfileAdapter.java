@@ -17,6 +17,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.trabalhofinal.R;
+import com.example.trabalhofinal.activities.BookMarksActivity;
 import com.example.trabalhofinal.activities.LoginActivity;
 import com.example.trabalhofinal.activities.MainActivity;
 import com.example.trabalhofinal.activities.MyRentalsActivity;
@@ -86,6 +87,8 @@ public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.ProfileV
                         break;
                     }
                     case 2: { // ITENS SALVOS
+                        Intent intent = new Intent(context, BookMarksActivity.class);
+                        context.startActivity(intent);
                         break;
                     }
                     case 3: {

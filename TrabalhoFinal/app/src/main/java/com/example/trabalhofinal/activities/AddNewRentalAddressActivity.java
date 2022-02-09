@@ -39,33 +39,25 @@ public class AddNewRentalAddressActivity extends AppCompatActivity {
         String uf = binding.edtUfAddNewRental.getEditText().getText().toString();
         String complement = binding.edtComplementAddNewRental.getEditText().getText().toString();
 
-        if (cep.trim().isEmpty() ||
-                street.trim().isEmpty() ||
-                distric.trim().isEmpty() ||
-                city.trim().isEmpty() ||
-                uf.trim().isEmpty() ||
-                complement.trim().isEmpty()) {
-            Toast.makeText(getApplicationContext(), "Preencha todos os campos!", Toast.LENGTH_SHORT).show();
-        } else {
-            Address address = new Address();
-            address.setCep(cep);
-            address.setStreet(street);
-            address.setDistrict(distric);
-            address.setCity(city);
-            address.setUf(uf);
-            address.setComplement(complement);
 
-            Rent rent = (Rent) getIntent().getSerializableExtra("rent");
+        Address address = new Address();
+        address.setCep(cep);
+        address.setStreet(street);
+        address.setDistrict(distric);
+        address.setCity(city);
+        address.setUf(uf);
+        address.setComplement(complement);
 
-            rent.setAddress(address);
+        Rent rent = (Rent) getIntent().getSerializableExtra("rent");
 
-            DAORent daoRent = new DAORent();
+        rent.setAddress(address);
 
-            daoRent.add(rent);
+        DAORent daoRent = new DAORent();
 
-            Intent intent = new Intent(this, MyRentalsActivity.class);
-            startActivity(intent);
-            finish();
-        }
+        daoRent.add(rent);
+
+        Intent intent = new Intent(this, MyRentalsActivity.class);
+        startActivity(intent);
+        finish();
     }
 }
